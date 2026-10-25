@@ -33,7 +33,9 @@ trustqat/
   models/      model-factory registry, per (benchmark, backend)
   testing/     backend conformance checks
 benchmarks/
-  jedi_linear/ JEDI-linear jet tagging (the TrustQAT paper's JEDI-linear experiments)
+  common/      shared train / test / export / select driver
+  jedi_linear/ JEDI-linear jet tagging (paper Tables II and III)
+  jsc_hlf/     HLF jet substructure classification (paper Table I)
 ```
 
 - **One backend ships, the API is open.** HGQ2 is the only bundled backend. Other QAT
@@ -116,11 +118,30 @@ without implementing a backend:
    `{"epoch": 7, "metrics": {"val_accuracy": ..., "val_ece": ...}, "cost": {"bops": ...}, "checkpoint": "..."}`.
 3. Run `trustqat select`.
 
-## Reproducing the JEDI-linear results
+## Reproducing the paper results
 
-See [benchmarks/jedi_linear/README.md](benchmarks/jedi_linear/README.md). The 20 TrustQAT
-configurations and the 20 HGQ baseline sweeps of the TrustQAT-AE artifact are in
-`benchmarks/jedi_linear/configs/`.
+- **HLF JSC (Table I).** See [benchmarks/jsc_hlf/README.md](benchmarks/jsc_hlf/README.md).
+  The five configs fine-tune the HGQ checkpoints at 530 to 13285 EBOPs.
+- **JEDI-linear (Tables II and III).** See
+  [benchmarks/jedi_linear/README.md](benchmarks/jedi_linear/README.md). The 20 TrustQAT
+  configurations and the 20 HGQ baseline sweeps of TrustQAT-AE are in
+  `benchmarks/jedi_linear/configs/`.
+
+Both benchmarks share one driver (`benchmarks/common/driver.py`) with the phases `train`,
+`test`, `select` and `export`.
+
+## Reproducibility
+
+JAX's default GPU kernels are not bit-deterministic. QAT can amplify last-bit differences
+when a value crosses a quantization boundary, so long runs may diverge. For bit-identical
+repeated runs, set:
+
+```bash
+export XLA_FLAGS=--xla_gpu_deterministic_ops=true
+```
+
+This changes the numerics slightly. Leave it unset when reproducing the TrustQAT-AE
+artifact, which was trained without it.
 
 ## License
 

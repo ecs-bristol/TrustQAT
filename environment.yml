@@ -14,6 +14,7 @@ dependencies:
       - "HGQ2==0.2.0"
       - "da4ml==0.6.0"
       - "h5py"
+      - "scikit-learn"
       - "numpy"
       - "omegaconf"
       - "pyyaml"
@@ -21,6 +22,6 @@ dependencies:
       - "matplotlib"
       - "pytest"
       - "ruff"
-      - "-e .[hgq2,da4ml,jedi,dev]"
+      - "-e .[hgq2,da4ml,jedi,jsc,dev]"
 variables:
   KERAS_BACKEND: jax

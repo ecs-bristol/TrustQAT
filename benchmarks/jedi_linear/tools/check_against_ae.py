@@ -39,13 +39,14 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--only', nargs='*', default=None, help='config stems, e.g. perminv-n16-f3')
     args = p.parse_args(argv)
 
+    from benchmarks.common.driver import load_config, seed_all
+    from benchmarks.common.driver import plain as _plain
     from trustqat.backends import get_backend
     from trustqat.core import calibration_report
     from trustqat.models import get_model_factory
 
     from .. import models  # noqa: F401
     from ..data import get_data
-    from ..run import _plain, load_config, seed_all
 
     results = args.results or args.ae_root / 'hardware_ece_da4ml' / 'ece_hardware_results.csv'
     with results.open() as f:

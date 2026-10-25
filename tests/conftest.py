@@ -6,6 +6,7 @@ os.environ.setdefault('KERAS_BACKEND', 'jax')
 os.environ.setdefault('JAX_PLATFORMS', 'cpu')
 
 sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parents[1]))  # for `benchmarks`
 
 import numpy as np  # noqa: E402
 import pytest  # noqa: E402

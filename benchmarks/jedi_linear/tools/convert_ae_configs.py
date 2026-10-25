@@ -106,6 +106,7 @@ def convert(src: Path) -> tuple[str, str]:
             'selection:',
             '  objectives: {val_accuracy: max, cost.ebops: min, val_ece: min}',
             f'  constraints: {{val_accuracy: {{gt: {_float(trust.get("pareto_min_accuracy", 0.5))}}}}}',
+            '  final: {min: val_ece}  # the artifact deploys the lowest-val-ECE front checkpoint',
         ]
     else:
         lines += [

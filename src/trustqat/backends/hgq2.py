@@ -247,15 +247,19 @@ class HGQ2Backend(BaseBackend):
 
         ``kwargs`` override :data:`DA4ML_DEFAULTS` (``part_name``, ``clock_period``,
         ``clock_uncertainty``, ``latency_cutoff``, ``solver_options``, ``hwconf``,
-        ``prj_name``). With ``compile=True`` the Verilator emulator is built, so the
-        returned ``da4ml.codegen.VerilogModel`` can ``predict`` for bit-exact checks.
-        The model should be inference-ready (:meth:`prepare_inference`).
+        ``prj_name``). ``vivado_tcl_replace`` is an optional list of ``[old, new]`` string
+        replacements applied to the generated ``build_vivado_prj.tcl`` (e.g. to drop a
+        synthesis directive). With ``compile=True`` the Verilator emulator is built, so the
+        returned ``da4ml.codegen.VerilogModel`` can ``predict`` for bit-exact checks;
+        otherwise only the project files are written. The model should be inference-ready
+        (:meth:`prepare_inference`).
         """
         from da4ml.codegen import VerilogModel
         from da4ml.converter import trace_model
         from da4ml.trace import HWConfig, comb_trace
 
         opts = {**DA4ML_DEFAULTS, **kwargs}
+        tcl_edits = opts.pop('vivado_tcl_replace', None) or []
         inp, out = trace_model(model, hwconf=HWConfig(*opts['hwconf']), solver_options=opts['solver_options'])
         solution = comb_trace(inp, out)
         rtl = VerilogModel(
@@ -269,4 +273,12 @@ class HGQ2Backend(BaseBackend):
         )
         if compile:
             rtl.compile()
+        else:
+            rtl.write()
+        tcl = Path(out_dir) / 'build_vivado_prj.tcl'
+        if tcl_edits and tcl.exists():
+            text = tcl.read_text()
+            for old, new in tcl_edits:
+                text = text.replace(old, new)
+            tcl.write_text(text)
         return rtl

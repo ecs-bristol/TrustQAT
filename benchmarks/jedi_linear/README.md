@@ -51,9 +51,9 @@ python -m benchmarks.jedi_linear -c $CFG -r export --rtl-samples 10000   # da4ml
 
 | Phase | Output in `save_path` |
 |---|---|
-| `train` | `records.jsonl`, `ckpts/` (Pareto front over val accuracy, val ECE, EBOPs), `pareto.json`, `selection.json`, `history.json`, `last.keras` |
+| `train` | `records.jsonl`, `ckpts/` (Pareto front over val accuracy, val ECE, EBOPs), `pareto.json`, `selection.json`, `history.json`, `last.keras`, `init_metrics.json` |
 | `test` | `models/` (inference-ready, after `trace_minmax`), `test_results.json` / `.csv` (accuracy, ECE, MCE, NLL, Brier, EBOPs) |
-| `select` | `selected.json`: the validation Pareto front joined with the test results |
+| `select` | `selected.json`: the validation Pareto front joined with the test results, plus `chosen`, the front checkpoint with the lowest validation ECE (`selection.final`), which is the model the artifact deployed |
 | `export` | `da4ml/<checkpoint>/` Verilog projects, `export_results.json` (da4ml LUT/FF estimates, RTL accuracy and mismatches) |
 
 Synthesis: `cd <save_path>/da4ml/<checkpoint> && vivado -mode batch -source build_vivado_prj.tcl`.

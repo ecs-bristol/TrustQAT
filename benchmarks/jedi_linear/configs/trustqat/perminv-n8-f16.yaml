@@ -47,6 +47,7 @@ trust:
 selection:
   objectives: {val_accuracy: max, cost.ebops: min, val_ece: min}
   constraints: {val_accuracy: {gt: 0.7341}}
+  final: {min: val_ece}  # the artifact deploys the lowest-val-ECE front checkpoint
 eval:
   n_bins: 15
   batch_size: 16384

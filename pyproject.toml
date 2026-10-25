@@ -24,6 +24,7 @@ hgq2 = ["keras>=3.15", "HGQ2>=0.2"]
 da4ml = ["da4ml>=0.6"]
 torch = ["torch>=2.1"]
 jedi = ["h5py", "tqdm", "matplotlib"]
+jsc = ["h5py", "scikit-learn"]
 dev = ["pytest>=7", "ruff"]
 
 [project.scripts]
