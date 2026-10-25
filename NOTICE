@@ -1,0 +1,14 @@
+TrustQAT
+Copyright 2026 TrustQAT contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The JEDI-linear benchmark (benchmarks/jedi_linear: models, data loading and dataset
+preparation) contains code derived from JEDI-linear, distributed under the Apache
+License, Version 2.0:
+
+  JEDI-linear
+  Copyright 2025 Chang Sun
+
+The HGQ2 backend uses the HGQ2 library (LGPL-3.0) as an unmodified, separately
+installed dependency.

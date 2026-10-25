@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+.DS_Store
+
+# experiment inputs and outputs
+runs/
+logs/
+dataset/
+official_models/
+official_result_reports/
+*.h5
+*.keras
+benchmarks/**/dataset
+benchmarks/**/official_models

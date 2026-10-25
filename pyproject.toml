@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trustqat"
+version = "0.1.0.dev0"
+description = "Trustworthiness-aware quantization-aware training with pluggable QAT backends"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "TrustQAT contributors" }]
+keywords = ["quantization-aware training", "calibration", "trustworthiness", "FPGA", "HGQ"]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = ["numpy>=1.23", "omegaconf>=2.3", "pyyaml"]
+
+[project.optional-dependencies]
+keras = ["keras>=3.15"]
+hgq2 = ["keras>=3.15", "HGQ2>=0.2"]
+da4ml = ["da4ml>=0.6"]
+torch = ["torch>=2.1"]
+jedi = ["h5py", "tqdm", "matplotlib"]
+dev = ["pytest>=7", "ruff"]
+
+[project.scripts]
+trustqat = "trustqat.cli:main"
+
+# QAT backends are discovered through this entry-point group. Third-party packages
+# register their own backends the same way, without changing this repository.
+[project.entry-points."trustqat.backends"]
+hgq2 = "trustqat.backends.hgq2:HGQ2Backend"
+
+[project.urls]
+Repository = "https://github.com/ecs-bristol/TrustQAT"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "hgq2: requires the HGQ2 backend",
+  "torch: requires PyTorch",
+  "gpu: requires a GPU",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "single"
